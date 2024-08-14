@@ -1,0 +1,10 @@
+linux:
+  - host: "192.168.45.54"
+    cmd: "cat /etc/passwd"
+  - host: "192.168.45.22"
+    cmd: "ip a"
+windows:
+  - host: "10.10.11.242"
+    cmd: "whoami"
+  - host: "10.10.14.4"
+    cmd: "ipconfig"

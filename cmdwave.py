@@ -51,6 +51,8 @@ def win(conf):
     """
     print(win_art)
     print("----------------------------")
+
+    raw_cmd = ""
     for host in conf['windows']:
         hostname = host['hostname']
         user = host['user']
@@ -61,7 +63,20 @@ def win(conf):
         print(f"User: {user}")
         print(f"Password: {pw}")
         print(f"cmd: {cmd}")
+
+        pwsh_cmd = f"TODO"
+        print(f"pwsh_cmd: {pwsh_cmd}")
+        raw_cmd += pwsh_cmd + ";"
         print("----------------------------")
+    
+    # Base64 encode the raw command
+    b64 = base64.b64encode(raw_cmd.encode("utf-16")[2:]).decode("utf-8")
+    enc_cmd = "powershell -nop -w hidden -e " + b64
+
+    print("Raw:")
+    print(raw_cmd)
+    print("Encoded:")
+    print(enc_cmd)
 
 def main():
     conf_path = "example.yml"

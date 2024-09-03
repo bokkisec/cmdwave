@@ -1,5 +1,6 @@
 import yaml
 import base64
+import argparse
 
 def linux(conf):
     linux_art = r"""
@@ -64,7 +65,9 @@ def win(conf):
         print(f"Password: {pw}")
         print(f"cmd: {cmd}")
 
-        pwsh_cmd = f"TODO"
+        raw_cmd += f"$cred = New-Object System.Management.Automation.PSCredential(\"{user}\", (ConvertTo-SecureString \"{pw}\" -AsPlainText -Force));"
+
+        pwsh_cmd = f"icm -ComputerName {hostname} -Credential $cred -ScriptBlock {{{cmd}}}"
         print(f"pwsh_cmd: {pwsh_cmd}")
         raw_cmd += pwsh_cmd + ";"
         print("----------------------------")
@@ -79,7 +82,12 @@ def win(conf):
     print(enc_cmd)
 
 def main():
-    conf_path = "example.yml"
+    parser = argparse.ArgumentParser(description='cmdwave')
+    parser.add_argument('-c','--conf', help='Path of configuration file', required=True)
+    #parser.add_argument('-b','--bar', help='Description for bar argument', required=True)
+    args = vars(parser.parse_args())
+
+    conf_path = args['conf']
     with open(conf_path, 'r') as file:
         conf = yaml.safe_load(file)
     
